@@ -120,7 +120,7 @@ const CardTable = () => {
   ) => {
     setModalData({ isOpen: true, action, customer });
     if (action === "print" && customer && "image" in customer) {
-      setSelectedCard(`${API_BASE_URL}/media/${customer.image}`);
+      setSelectedCard(`${API_BASE_URL}/${customer.image}`);
     }
     if (customer && "card_id" in customer) {
       setSelectedCardId(customer.card_id); // If the customer has a card_id, set it
@@ -245,7 +245,7 @@ const CardTable = () => {
                   onClick={() => {
                     const imageUrl = card.image.startsWith("http")
                       ? card.image
-                      : `${API_BASE_URL}${card.image}`;
+                      : `${API_BASE_URL}/${card.image}`;
                     console.log("Image URL:", imageUrl);
                     handleRowClick(card.card_id, imageUrl);
                   }}
@@ -297,7 +297,7 @@ const CardTable = () => {
                     onClick={() =>
                       handleRowClick(
                         member.card_id,
-                        `${API_BASE_URL}/media/${group.image}`
+                        `${API_BASE_URL}/${group.image}`
                       )
                     }
                   >
