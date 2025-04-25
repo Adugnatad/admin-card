@@ -3,8 +3,17 @@ import axios from "axios";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   // baseURL: "http://127.0.0.1:8090/",
-
 });
+
+export const updateAuthorizationHeader = async (token: string) => {
+  if (token) {
+    var formattedToken = token.replace(/['"]+/g, "");
+    console.log(formattedToken);
+    api.defaults.headers.common["Authorization"] = `Bearer ${formattedToken}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
+  }
+};
 
 // Interceptor to add authorization headers
 api.interceptors.request.use(
