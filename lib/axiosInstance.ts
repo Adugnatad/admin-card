@@ -8,7 +8,6 @@ const api = axios.create({
 export const updateAuthorizationHeader = async (token: string) => {
   if (token) {
     var formattedToken = token.replace(/['"]+/g, "");
-    console.log(formattedToken);
     api.defaults.headers.common["Authorization"] = `Bearer ${formattedToken}`;
   } else {
     delete api.defaults.headers.common["Authorization"];
