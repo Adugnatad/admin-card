@@ -22,6 +22,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { login } from "@/lib/apis/login_api";
+import { useAuth } from "@/context/auth-context";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -30,11 +31,12 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const logins: any = useMutation({
-    mutationFn: () => login(username, password),
+    mutationFn: () => login(username, password, setUser),
     onSuccess: (data) => {
-      router.push("/");
+      router.push("/dashboard");
     },
     onError: (error) => {
       console.error("Login error:", error);

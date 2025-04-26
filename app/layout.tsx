@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@fontsource/inter"; // Import local Inter font
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
+import { AuthProvider } from "@/context/auth-context";
 
 // const inter = Inter({ subsets: ["latin"] })
 
@@ -18,10 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang="en">
-        <body className="font-inter">{children}</body>
-      </html>
-    </QueryProvider>
+    <html lang="en">
+      <body className="font-inter">
+        <AuthProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }
