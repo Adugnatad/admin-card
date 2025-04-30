@@ -23,6 +23,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 import api from "@/lib/axiosInstance"; // Import API utility
 import { set } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import React from "react";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface ConfirmedCard {
@@ -84,6 +86,7 @@ const CardTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const router = useRouter();
 
   const itemsPerPage = 10;
 
@@ -115,7 +118,7 @@ const CardTable = () => {
       }
     };
     fetchData();
-  }, [selectedTab]);
+  }, [selectedTab, router]);
 
   useEffect(() => {
     setCurrentPage(1);
