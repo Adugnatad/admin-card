@@ -19,11 +19,7 @@ export default function ProtectedRoute({
     if (!isAuthenticated) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated) {
-    return null; // Will redirect in the useEffect
-  }
+  }, [isAuthenticated]);
 
   return <>{children}</>;
 }

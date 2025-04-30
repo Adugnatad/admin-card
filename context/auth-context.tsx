@@ -3,6 +3,7 @@
 import type React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { updateAuthorizationHeader } from "@/lib/axiosInstance";
 
 type AuthContextType = {
   user: any;
@@ -14,31 +15,36 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      return storedUser ? JSON.parse(storedUser) : null;
+    }
+    return null;
+  });
+
   const router = useRouter();
 
   // Check if user is logged in on initial load
   useEffect(() => {
-    const checkAuth = () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch (error) {
-          console.error("Failed to parse stored user:", error);
-          localStorage.removeItem("user");
-        }
+    if (user) {
+      try {
+        updateAuthorizationHeader(user.access);
+      } catch (error) {
+        console.error("Failed to update authorization header:", error);
+        setUser(null);
+        localStorage.removeItem("user");
       }
-    };
-
-    checkAuth();
-  }, []);
+    }
+  }, [user]);
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
     router.push("/login");
   };
+
+  // console.log("AuthProvider user:", user);
 
   const value = {
     user,

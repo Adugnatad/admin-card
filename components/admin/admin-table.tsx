@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 import api from "@/lib/axiosInstance"; // Import API utility
+import { set } from "react-hook-form";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface ConfirmedCard {
@@ -75,7 +76,7 @@ const CardTable = () => {
   const [modalData, setModalData] = useState<{
     isOpen: boolean;
     action: string;
-    customer: ConfirmedCard | null;
+    customer: ConfirmedCard | GroupCustomer | null;
   }>({ isOpen: false, action: "", customer: null });
   const [rejectReason, setRejectReason] = useState("");
   const [individualData, setIndividualData] = useState<ConfirmedCard[]>([]);
@@ -88,12 +89,18 @@ const CardTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        setError(null);
         const response = await api.get(
           `api/v1/cards/confirmed-cards/${selectedTab}`
         );
+
+        if (response.status !== 200) {
+          throw new Error("Failed to fetch data");
+        } else {
+          setError(null);
+        }
 
         if (selectedTab === "individual") {
           setIndividualData(response.data);
@@ -101,8 +108,8 @@ const CardTable = () => {
           setGroupData(response.data || []);
           localStorage.setItem("selectedTab", selectedTab); // Save selection to localStorage
         }
-      } catch (err) {
-        setError("Failed to fetch data.");
+      } catch (error: any) {
+        setError("Failed to fetch data");
       } finally {
         setLoading(false);
       }
