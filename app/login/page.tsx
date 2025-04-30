@@ -23,6 +23,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { login } from "@/lib/apis/login_api";
 import { useAuth } from "@/context/auth-context";
+import { LoadingScreen } from "@/components/loading-screen";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,17 +51,7 @@ export default function LoginPage() {
   };
 
   if (logins.isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <Image
-          src="/loading.gif"
-          alt="Loading..."
-          width={50}
-          height={50}
-          className="animate-spin"
-        />
-      </div>
-    );
+    return <LoadingScreen message="Logging in..." />;
   }
 
   return (
@@ -118,7 +109,7 @@ export default function LoginPage() {
                 />
               </div>
 
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <Checkbox
                   id="remember"
                   checked={rememberMe}
@@ -132,7 +123,7 @@ export default function LoginPage() {
                 >
                   Remember me
                 </label>
-              </div>
+              </div> */}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}

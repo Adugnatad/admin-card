@@ -406,6 +406,12 @@ const CardTable = () => {
                       status: string;
                       reason?: string;
                     } = { id: selectedCardId!, status };
+
+                    if (modalData.action === "reject" && !rejectReason.trim()) {
+                      alert("Please enter a rejection reason.");
+                      return;
+                    }
+
                     if (modalData.action === "print" && selectedCard) {
                       const response = await fetch(selectedCard);
                       const blob = await response.blob();
