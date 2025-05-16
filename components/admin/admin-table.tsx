@@ -125,8 +125,11 @@ const CardTable = () => {
   }, [filter, searchTerm, selectedTab]);
 
   const handleModal = (
+    
     action: string,
+
     customer: ConfirmedCard | GroupCustomer | null
+
   ) => {
     setModalData({ isOpen: true, action, customer });
     if (action === "print" && customer && "image" in customer) {
