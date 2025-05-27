@@ -1,4 +1,5 @@
 import withFlowbiteReact from "flowbite-react/plugin/nextjs";
+import { baseURL } from "process";
 
 let userConfig = undefined;
 try {
@@ -23,6 +24,10 @@ const nextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+  },
+  publicRuntimeConfig: {
+    basePath: "/admin",
+    apiBaseUrl: "http://localhost:5000",
   },
   async redirects() {
     return [
